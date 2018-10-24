@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAmingComponent.h"
-
+#include "Engine/World.h"
+#include "TankBarrel.h"
 
 // Sets default values for this component's properties
 UTankAmingComponent::UTankAmingComponent()
@@ -14,27 +15,56 @@ UTankAmingComponent::UTankAmingComponent()
 }
 
 
-// Called when the game starts
-void UTankAmingComponent::BeginPlay()
+void UTankAmingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	Super::BeginPlay();
+	if (!Barrel)
+	{
+		return;
+	}
+	FVector OutLaunchVelocity;
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 
-	// ...
+	/// Calculate The Velocity with startLocation endLocation startSpeed 
+	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity
+	(
+		this,
+		OutLaunchVelocity,
+		StartLocation,
+		HitLocation,
+		LaunchSpeed,
+		false,
+		0,
+		0,
+		ESuggestProjVelocityTraceOption::DoNotTrace
+	);
+
+	if (bHaveAimSolution)
+	{
+		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+		MoveBarrelTowards(AimDirection);
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f:find"), Time)
+	}
+	else
+	{
+		auto Time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f:no"), Time)
+	}
 	
 }
-
-
-// Called every frame
-void UTankAmingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UTankAmingComponent::MoveBarrelTowards(FVector AimDirection)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	//Work difference between current rotation, and AimDeriction
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
+	//UE_LOG(LogTemp, Warning, TEXT("DeltaRotator: %s"), *DeltaRotator.ToString())
 
-	// ...
+	Barrel->Elevate(1);
 }
 
-void UTankAmingComponent::AimAt(FVector worldSpaceAim)
+void UTankAmingComponent::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
-	auto OurTankName = GetName();
-	UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s"), *OurTankName, *worldSpaceAim.ToString());
+	Barrel = BarrelToSet;
 }
 
