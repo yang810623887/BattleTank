@@ -4,48 +4,29 @@
 #include "Engine/World.h"
 
 
-ATank* ATankAIController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
 void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	///TODO
-	auto PlayerTank = GetPlayerTank();
-
-	if (!PlayerTank)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerTank not possesing a tank"))
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("PlayerTank possesing :%s tank"), *(PlayerTank->GetName()))
-	}
 }
 
 void ATankAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (GetPlayerTank())
+	///TODO
+	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+	auto ControllerTank = Cast<ATank>(GetPawn());
+
+	if (PlayerTank)
 	{
-		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+		ControllerTank->AimAt(PlayerTank->GetActorLocation());
+
+
+		ControllerTank->Fire();
+	}
+	else
+	{
 
 	}
-}
-
-ATank * ATankAIController::GetPlayerTank() const
-{
-
-	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
-
-	if (!PlayerPawn)
-	{
-		return nullptr;
-	}
-
-	return Cast<ATank>(PlayerPawn);
 }
