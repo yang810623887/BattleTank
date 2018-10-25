@@ -67,10 +67,14 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector & HitLocaton) const
 	if (GetLookDirection(LookDirection, ScreenLocation))
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("LookDirection: %s"), *LookDirection.ToString());
-		GetLookVectorHitLocation(HitLocaton, LookDirection);
+		if (GetLookVectorHitLocation(HitLocaton, LookDirection))
+		{
+			return true;
+		}
+		return false;
 	}
 
-	return true;
+	return false;
 }
 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector& HitLocaton, FVector LookDirection) const
@@ -86,7 +90,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector& HitLocaton, FVecto
 		ECollisionChannel::ECC_Visibility
 	))
 	{
-		DrawDebugLine(
+		/*DrawDebugLine(
 			GetWorld(),
 			StartLocation,
 			EndLocation,
@@ -95,7 +99,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector& HitLocaton, FVecto
 			0.f,
 			0.f,
 			3.f
-		);
+		);*/
 		HitLocaton = HitResult.Location;
 		return true;
 	}
