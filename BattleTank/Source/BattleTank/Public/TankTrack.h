@@ -6,6 +6,8 @@
 #include "Components/StaticMeshComponent.h"
 #include "TankTrack.generated.h"
 
+
+
 /**
  * 
  */
@@ -16,7 +18,12 @@ class BATTLETANK_API UTankTrack : public UStaticMeshComponent
 	
 	
 public:
+
 	UFUNCTION(BlueprintCallable, Category = Input)
 		void SetThrottle(float Throttle);
+
+private:
+	UPROPERTY(EditDefaultsOnly)
+		float TrackMaxDirningForce = 40000000.0f;
 	
 };
