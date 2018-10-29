@@ -20,7 +20,6 @@ void ATankAIController::Tick(float DeltaTime)
 
 	if (PlayerTank)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("vectoring"));
 		MoveToActor(PlayerTank, AcceptanceRadius);
 
 		ControllerTank->AimAt(PlayerTank->GetActorLocation());
