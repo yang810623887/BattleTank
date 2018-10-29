@@ -3,6 +3,8 @@
 #include "TankTrack.h"
 #include "Engine/World.h"
 #include "Components/PrimitiveComponent.h"
+#include "ConstructorHelpers.h"
+
 
 void UTankTrack::SetThrottle(float Throttle)
 {
