@@ -14,7 +14,7 @@ void UTankAmingComponent::Initialise(UTankBarrel * BarrelToSet, UTankTurret * Tu
 
 void UTankAmingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	if (!Barrel)
+	if (!ensure(Barrel))
 	{
 		return;
 	}
