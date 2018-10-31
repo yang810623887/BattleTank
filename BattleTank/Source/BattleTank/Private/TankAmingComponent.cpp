@@ -121,7 +121,7 @@ EFiringState UTankAmingComponent::GetFiringState() const
 	return FiringState;
 }
 
-int UTankAmingComponent::GetRoundLeft() const
+int32 UTankAmingComponent::GetRoundLeft() const
 {
 	return RoundsLeft;
 }
