@@ -19,19 +19,18 @@ void UTankAmingComponent::BeginPlay()
 
 void UTankAmingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
 	if ((FPlatformTime::Seconds() - LastFireTime) < ReloadTimeInSeconds)
 	{
 		FiringState = EFiringState::Reloading;
-		UE_LOG(LogTemp, Warning, TEXT("111"))
 	}
 	else if(IsBarrelMoving())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("2222"))
 		FiringState = EFiringState::Aiming;
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("3333"))
 		FiringState = EFiringState::Locked;
 	}
 }
