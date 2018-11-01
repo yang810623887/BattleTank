@@ -3,6 +3,7 @@
 #include "Engine/World.h"
 #include "Public/DrawDebugHelpers.h"
 #include "TankAmingComponent.h"
+#include "Tank.h"
 
 
 
@@ -106,4 +107,29 @@ bool ATankPlayerController::GetLookDirection(FVector& LookDirection, FVector2D S
 		return true;
 	}
 	return false;
+}
+
+void ATankPlayerController::SetPawn(APawn * InPawn)
+{
+	Super::SetPawn(InPawn);
+
+	if (!ensure(InPawn)) { return; }
+	else
+	{
+		auto PossessedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossessedTank)) { return; }
+
+		PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPossedTankDeath);
+	}
+}
+void ATankPlayerController::OnPossedTankDeath()
+{
+	StartSpectatingOnly();
+
+	//if (!ensure(GetPawn()))
+	//{
+	//	return;
+	//}
+
+	//GetPawn()->DetachFromControllerPendingDestroy();
 }

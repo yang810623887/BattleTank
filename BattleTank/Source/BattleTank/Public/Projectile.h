@@ -8,6 +8,8 @@
 #include "Projectile.generated.h"
 
 class URadialForceComponent;
+class UGameplayStatics;
+class UDamageType;
 
 UCLASS()
 class BATTLETANK_API AProjectile : public AActor
@@ -24,6 +26,8 @@ protected:
 
 public:	
 	void LaunchProjectile(float Speed);
+
+	void OnTimerExpire();
 
 private:
 	UFUNCTION()
@@ -42,4 +46,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	URadialForceComponent* ExplosionForce = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float DestroyDelay = 10.f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float ProjectileDamage = 20.f;
 };
