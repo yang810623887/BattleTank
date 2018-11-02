@@ -19,7 +19,7 @@ void ATankAIController::Tick(float DeltaTime)
 	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 	auto ControllerTank = GetPawn();
 
-	if (!ensure(PlayerTank && ControllerTank))
+	if (!(PlayerTank && ControllerTank))
 	{
 		return;
 	}
@@ -42,7 +42,7 @@ void ATankAIController::SetPawn(APawn * InPawn)
 {
 	Super::SetPawn(InPawn);
 
-	if (!ensure(InPawn)) { return; }
+	if (!InPawn) { return; }
 	else
 	{
 		auto PossessedTank = Cast<ATank>(InPawn);
