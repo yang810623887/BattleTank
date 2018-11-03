@@ -113,7 +113,7 @@ void ATankPlayerController::SetPawn(APawn * InPawn)
 {
 	Super::SetPawn(InPawn);
 
-	if (!ensure(InPawn)) { return; }
+	if (!(InPawn)) { return; }
 	else
 	{
 		auto PossessedTank = Cast<ATank>(InPawn);
